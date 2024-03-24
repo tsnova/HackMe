@@ -1,4 +1,5 @@
 ﻿using HackMe.Application.Models;
+using HackMe.Application.Models.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace HackMe.Infrastructure.Data
@@ -13,6 +14,9 @@ namespace HackMe.Infrastructure.Data
         Task<int> CountNews();
         IList<News> GetNewsList(bool? classified);
         News? GetNewsItem(int id);
+
+        Task CreateChallengeResult(string agentCodeName, int taskId);
+        Task<IList<ChallangeResultDetailsDto>> GetAllChallenges(string agentCodeName);
     }
 
     public class Repository : IRepository
@@ -75,6 +79,51 @@ namespace HackMe.Infrastructure.Data
         public News? GetNewsItem(int id)
         {
             return _dbContext.News.Find(id);
+        }
+
+        public async Task CreateChallengeResult(string agentCodeName, int taskId)
+        {
+            var item = await _dbContext.ChallengeResults
+                            .SingleOrDefaultAsync(x => x.AgentCodeName == agentCodeName && x.ChallangeTaskId == taskId);
+
+            if (item != null) return;
+
+            item = new ChallengeResult
+            {
+                AgentCodeName = agentCodeName,
+                ChallangeTaskId = taskId,
+                CompletedOn = DateTime.Now,
+            };
+
+            _dbContext.ChallengeResults.Add(item);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IList<ChallangeResultDetailsDto>> GetAllChallenges(string agentCodeName)
+        {
+            var list = new List<ChallangeResultDetailsDto>();
+            var tasks = await _dbContext.ChallengeTasks
+                            .OrderBy(x => x.SortOrder).ToListAsync();
+            var results = await _dbContext.ChallengeResults
+                            .Where(x => x.AgentCodeName == agentCodeName).ToListAsync();
+
+            foreach (var task in tasks)
+            {
+                var result = results.SingleOrDefault(x => x.ChallangeTaskId == task.Id);
+
+                var item = new ChallangeResultDetailsDto
+                {
+                    TaskId = task.Id,
+                    TaskName = task.Name,
+                    TaskDescription = task.Description,
+                    DifficultyLevel = task.DifficultyLevel,
+                    Score = task.Score,
+                    CompletedOn = result?.CompletedOn,
+                };
+                list.Add(item);
+            }
+
+            return list;
         }
     }
 }

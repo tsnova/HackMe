@@ -1,21 +1,24 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using HackMe.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HackMe.Controllers
 {
-    [Authorize]
-    public class TaskController : Controller
+    public class TaskController : BaseController
     {
+        private readonly IChallengeTaskService _challengeTaskService;
         private readonly ILogger<TaskController> _logger;
 
-        public TaskController(ILogger<TaskController> logger)
+        public TaskController(IChallengeTaskService challengeTaskService,
+            ILogger<TaskController> logger)
         {
+            _challengeTaskService = challengeTaskService;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var results = await _challengeTaskService.GetAll(GetUserIdentity());
+            return View(results);
         }
     }
 }

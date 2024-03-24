@@ -34,6 +34,7 @@ builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IRepository, Repository>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IAgentService, AgentService>();
+builder.Services.AddTransient<IChallengeTaskService, ChallengeTaskService>();
 
 var app = builder.Build();
 
@@ -56,12 +57,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-//app.MapControllerRoute(
-//        name: "profile",
-//        pattern: "/Profile/{action}/{codeName}",
-//        defaults: new { controller = "Profile", action = "Index" }
-//    );
-
 app.MapControllerRoute(
         name: "notfound",
         pattern: "/Error/{action=PageNotFound}",
@@ -76,7 +71,6 @@ app.MapControllerRoute(
         name: "default",
         pattern: "/{controller}/{action}/{id?}",
         defaults: new { controller = "Home", action = "Index" }
-
     );
 
 app.MapRazorPages();
