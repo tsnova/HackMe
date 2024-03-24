@@ -1,4 +1,5 @@
-﻿using HackMe.Infrastructure.Data;
+﻿using HackMe.Application.Helpers;
+using HackMe.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
@@ -21,9 +22,10 @@ namespace HackMe.Application.Services
             {
                 password = Regex.Replace(password, @"\s+", " ").Trim();
 
-                if (password.StartsWith("'"))
+                if (InputHelper.IsAllowedSqlInjection(password))
                 {
-                    successful = password.Contains("or 1=1");
+                    var agent = _repository.ValidateAgentLogin(username, password);
+                    successful = agent != null;
                 }
                 else
                 {

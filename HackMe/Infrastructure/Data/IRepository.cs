@@ -7,6 +7,7 @@ namespace HackMe.Infrastructure.Data
     {
         Task<bool> AgentExists(string codeName);
         Task<Agent?> GetAgent(string codeName, string password);
+        string? ValidateAgentLogin(string codeName, string password);
     }
 
     public class Repository : IRepository
@@ -28,6 +29,21 @@ namespace HackMe.Infrastructure.Data
             return _dbContext.Agents.SingleOrDefaultAsync(x => x.CodeName == codeName && x.Password == password);
         }
 
+        public string? ValidateAgentLogin(string codeName, string password)
+        {
+            var query = $"SELECT CodeName FROM Agent WHERE CodeName = '{codeName}' AND Password = '{password}'";
+
+            try
+            {
+                var result = _dbContext.Database.ExecuteSqlRaw(query);
+                return result.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred during authentication: {ex.Message}");
+                return null;
+            }
+        }
 
     }
 }
