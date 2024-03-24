@@ -29,6 +29,8 @@ namespace HackMe.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
+            ViewBag.ShowHeader = false;
+
             if (!ModelState.IsValid)
             {
                 loginViewModel.ErrorMessage = ErrorLoginMessage;
@@ -43,7 +45,7 @@ namespace HackMe.Controllers
                 return View("Index", loginViewModel);
             }
 
-            return RedirectToAction("Index", "Content");
+            return RedirectToAction("Index", "AboutUs");
         }
     }
 }
