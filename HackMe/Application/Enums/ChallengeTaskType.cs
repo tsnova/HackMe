@@ -6,5 +6,6 @@
         UnauthorizedProfile = 2,
         XSSAttack = 3,
         CountNews = 4,
+        ShowClassifiedData = 5,
     }
 }

@@ -12,7 +12,7 @@ namespace HackMe.Infrastructure.Data
         string? ValidateAgentLogin(string codeName, string password);
 
         Task<int> CountNews();
-        IList<News> GetNewsList(bool? classified);
+        IList<News> GetNewsList(bool includeClassified);
         News? GetNewsItem(int id);
 
         Task CreateChallengeResult(string agentCodeName, int taskId);
@@ -64,21 +64,22 @@ namespace HackMe.Infrastructure.Data
             return _dbContext.News.CountAsync();
         }
 
-        public IList<News> GetNewsList(bool? classified)
+        public IList<News> GetNewsList(bool includeClassified)
         {
-            var query = _dbContext.News.OrderBy(x => x.Name);
+            var query = _dbContext.News
+                            .Where(x => x.IsActive);
 
-            if (classified == null)
-                return query.ToList();
+            if (!includeClassified)
+                query = query.Where(x => !x.IsClassified);
 
-            return _dbContext.News
-                    .Where(x => x.IsClassified == classified)
+            return query
+                    .OrderBy(x => x.Name)
                     .ToList();
         }
 
         public News? GetNewsItem(int id)
         {
-            return _dbContext.News.Find(id);
+            return _dbContext.News.SingleOrDefault(x => x.Id == id && x.IsActive);
         }
 
         public async Task CreateChallengeResult(string agentCodeName, int taskId)

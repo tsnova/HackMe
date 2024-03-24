@@ -21,11 +21,6 @@ body {
   margin-bottom: 60px;
 }
 
-.login-form {
-    background-color: #f4f4f4;
-}
-
-
 .form-signin {
     max-width: 600px;
     padding: 1rem;
@@ -47,3 +42,31 @@ body {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+/* about us content
+-------------------------------------------------- */
+
+.site-content .col-lg-4 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+/* rtl:begin:ignore */
+.site-content .col-lg-4 p {
+    margin-right: .75rem;
+    margin-left: .75rem;
+}
+/* rtl:end:ignore */
+
+/* Featurettes
+------------------------- */
+
+.featurette-divider {
+    margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+}
+
+/* Thin out the marketing headings */
+/* rtl:begin:remove */
+.featurette-heading {
+    letter-spacing: -.05rem;
+}
+

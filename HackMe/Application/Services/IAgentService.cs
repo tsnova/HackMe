@@ -8,7 +8,7 @@ namespace HackMe.Application.Services
         Task<Agent?> GetAgent(string codeName);
 
         Task<int> CountNews();
-        IList<News> GetNewsList(bool? classified);
+        IList<News> GetNewsList(bool includeClassified);
         News? GetNewsItem(int id);
     }
 
@@ -36,9 +36,9 @@ namespace HackMe.Application.Services
             return _repository.GetNewsItem(id);
         }
 
-        public IList<News> GetNewsList(bool? classified)
+        public IList<News> GetNewsList(bool includeClassified)
         {
-            return _repository.GetNewsList(classified);
+            return _repository.GetNewsList(includeClassified);
         }
     }
 }

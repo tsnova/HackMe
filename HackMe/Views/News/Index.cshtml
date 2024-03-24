@@ -1,0 +1,21 @@
+﻿@model IEnumerable<NewsViewModel>
+@{
+    ViewData["Title"] = "News";
+}
+
+<div class="container site-content">
+    @foreach (var item in Model)
+    {
+        <div>
+            <h2 class="featurette-heading fw-normal lh-1">
+                @item.Name
+                @if (item.IsClassified)
+                {
+                    <span class="text-body-secondary">Classified</span>
+                }
+            </h2>
+            <p class="lead">@item.Description</p>
+        </div>
+        <hr/>
+    }
+</div>
