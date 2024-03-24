@@ -28,6 +28,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
 
 builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddTransient<IRepository, Repository>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();

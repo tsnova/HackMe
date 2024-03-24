@@ -1,13 +1,37 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using HackMe.Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace HackMe.Application.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
+        private readonly IRepository _repository;
+
+        public AuthenticationService(IRepository repository)
+        {
+            _repository = repository;
+        }
+
         public async Task<bool> SignIn(string username, string password, HttpContext httpContext)
         {
-            var successful = true;
+            var successful = false;
+            if (await _repository.AgentExists(username))
+            {
+                password = Regex.Replace(password, @"\s+", " ").Trim();
+
+                if (password.StartsWith("'"))
+                {
+                    successful = password.Contains("or 1=1");
+                }
+                else
+                {
+                    var agent = await _repository.GetAgent(username, password);
+                    successful = agent != null;
+                }
+            }
+
             if (successful)
             {
                 await AuthenticateUser(username, httpContext);
@@ -28,7 +52,6 @@ namespace HackMe.Application.Services
 
             await httpContext.SignInAsync("customAuthentication", principal);
 
-            // Set session value
             httpContext.Session.SetString("codeName", username);
             httpContext.Response.Cookies.Append("showClassifedData", true.ToString());
         }

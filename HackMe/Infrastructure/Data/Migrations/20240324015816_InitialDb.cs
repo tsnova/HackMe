@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace HackMe.Infrastructure.Data.Migrations
+namespace HackMe.Migrations
 {
     /// <inheritdoc />
     public partial class InitialDb : Migration
@@ -73,8 +73,7 @@ namespace HackMe.Infrastructure.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AgentCodeName = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     ChallangeTaskId = table.Column<int>(type: "int", nullable: false),
-                    CompletedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ChallengeTaskId = table.Column<int>(type: "int", nullable: true)
+                    CompletedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,10 +85,11 @@ namespace HackMe.Infrastructure.Data.Migrations
                         principalColumn: "CodeName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ChallengeResult_ChallengeTask_ChallengeTaskId",
-                        column: x => x.ChallengeTaskId,
+                        name: "FK_ChallengeResult_ChallengeTask_ChallangeTaskId",
+                        column: x => x.ChallangeTaskId,
                         principalTable: "ChallengeTask",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -98,9 +98,9 @@ namespace HackMe.Infrastructure.Data.Migrations
                 column: "AgentCodeName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChallengeResult_ChallengeTaskId",
+                name: "IX_ChallengeResult_ChallangeTaskId",
                 table: "ChallengeResult",
-                column: "ChallengeTaskId");
+                column: "ChallangeTaskId");
         }
 
         /// <inheritdoc />

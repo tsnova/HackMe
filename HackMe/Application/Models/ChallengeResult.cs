@@ -9,6 +9,7 @@
         public DateTime CompletedOn { get; set; }
 
         public Agent Agent { get; set; } = null!;
+        public ChallengeTask ChallengeTask { get; set; } = null!;
     }
 
 }

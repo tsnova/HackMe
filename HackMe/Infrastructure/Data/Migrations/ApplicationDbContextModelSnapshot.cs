@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HackMe.Infrastructure.Data.Migrations
+namespace HackMe.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace HackMe.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -80,9 +80,6 @@ namespace HackMe.Infrastructure.Data.Migrations
                     b.Property<int>("ChallangeTaskId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ChallengeTaskId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CompletedOn")
                         .HasColumnType("datetime2");
 
@@ -90,7 +87,7 @@ namespace HackMe.Infrastructure.Data.Migrations
 
                     b.HasIndex("AgentCodeName");
 
-                    b.HasIndex("ChallengeTaskId");
+                    b.HasIndex("ChallangeTaskId");
 
                     b.ToTable("ChallengeResult");
                 });
@@ -171,11 +168,15 @@ namespace HackMe.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HackMe.Application.Models.ChallengeTask", null)
+                    b.HasOne("HackMe.Application.Models.ChallengeTask", "ChallengeTask")
                         .WithMany("Results")
-                        .HasForeignKey("ChallengeTaskId");
+                        .HasForeignKey("ChallangeTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Agent");
+
+                    b.Navigation("ChallengeTask");
                 });
 
             modelBuilder.Entity("HackMe.Application.Models.ChallengeTask", b =>
