@@ -1,3 +1,4 @@
+using HackMe.Application.AutoMapperProfiles;
 using HackMe.Application.Services;
 using HackMe.Infrastructure.Data;
 using HackMe.Infrastructure.Middleware;
@@ -24,12 +25,15 @@ builder.Services.AddAuthentication("customAuthentication")
         options.LoginPath = "/Home";
     });
 
+builder.Services.AddAutoMapper(typeof(AgentProfile));
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
 
 builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IRepository, Repository>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+builder.Services.AddTransient<IAgentService, AgentService>();
 
 var app = builder.Build();
 
@@ -51,6 +55,12 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseRouting();
 
 app.UseAuthorization();
+
+//app.MapControllerRoute(
+//        name: "profile",
+//        pattern: "/Profile/{action}/{codeName}",
+//        defaults: new { controller = "Profile", action = "Index" }
+//    );
 
 app.MapControllerRoute(
         name: "notfound",
