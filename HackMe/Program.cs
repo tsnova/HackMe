@@ -1,3 +1,4 @@
+using HackMe.Application.Services;
 using HackMe.Infrastructure.Data;
 using HackMe.Infrastructure.Middleware;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +11,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, options => options.EnableRetryOnFailure()));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+builder.Services.AddAuthentication("customAuthentication")
+    .AddCookie("customAuthentication", options =>
+    {
+        options.LoginPath = "/Home";
+    });
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
+
+builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();
 
@@ -22,9 +39,11 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Error/Unhandled");
 }
 app.UseStaticFiles();
+app.UseSession();
+app.UseAuthentication();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
@@ -43,8 +62,11 @@ app.MapControllerRoute(
         defaults: new { controller = "Error" }
     );
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}");
+        name: "default",
+        pattern: "/{controller}/{action}/{id?}",
+        defaults: new { controller = "Home", action = "Index" }
+
+    );
 
 app.MapRazorPages();
 

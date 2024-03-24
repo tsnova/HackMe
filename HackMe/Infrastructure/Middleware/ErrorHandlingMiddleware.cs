@@ -17,7 +17,7 @@
             {
                 context.Response.Redirect("/Error/NotFound");
             }
-            else
+            else if (context.Response.StatusCode == 500)
             {
                 context.Response.Redirect("/Error/Unhandled");
             }

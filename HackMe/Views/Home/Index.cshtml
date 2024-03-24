@@ -1,8 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Welcome to Secret agent";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container login-container">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="text-center">Login</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Login" method="post">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label asp-for="CodeName">CodeName:</label>
+                    <input asp-for="CodeName" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password">Password:</label>
+                    <input asp-for="Password" type="password" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+
+                @if (!String.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="text-danger">@Model.ErrorMessage</div>
+                }
+            </form>
+        </div>
+    </div>
 </div>
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

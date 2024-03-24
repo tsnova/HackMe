@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HackMe.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HackMe.Controllers
 {
@@ -18,7 +19,7 @@ namespace HackMe.Controllers
 
         public IActionResult Unhandled()
         {
-            return View();
+            return View(new ErrorViewModel());
         }
     }
 }
