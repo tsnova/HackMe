@@ -43,6 +43,11 @@ body {
     border-top-right-radius: 0;
 }
 
+.form-profile .form-label {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
 /* about us content
 -------------------------------------------------- */
 

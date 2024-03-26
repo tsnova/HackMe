@@ -10,17 +10,14 @@ namespace HackMe.Controllers
     {
         private readonly IAgentService _agentService;
         private readonly IMapper _mapper;
-        private readonly ILogger<ProfileController> _logger;
 
         public NewsController(
             IAgentService agentService,
             IChallengeTaskService challengeTaskService,
-            IMapper mapper,
-            ILogger<ProfileController> logger) : base(challengeTaskService)
+            IMapper mapper) : base(challengeTaskService)
         {
             _agentService = agentService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
@@ -40,6 +37,11 @@ namespace HackMe.Controllers
             if (result == null || result.IsClassified != classified)
             {
                 return RedirectToAction("PageNotFound", "Error");
+            }
+
+            if (result.IsClassified != classified)
+            {
+                return RedirectToAction("UnAuthorized", "Error");
             }
 
             var viewModel = _mapper.Map<NewsViewModel>(result);

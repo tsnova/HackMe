@@ -21,5 +21,10 @@ namespace HackMe.Controllers
         {
             return View(new ErrorViewModel());
         }
+
+        public IActionResult UnAuthorized()
+        {
+            return View();
+        }
     }
 }
