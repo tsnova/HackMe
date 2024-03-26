@@ -37,8 +37,7 @@ namespace HackMe.Application.Services
         {
             if (await _repository.AgentExists(agentCodeName))
             {
-                await _repository.CreateChallengeResult(agentCodeName, taskId);
-                return true;
+                return await _repository.CreateChallengeResult(agentCodeName, taskId);
             }
 
             return false;

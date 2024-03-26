@@ -9,7 +9,6 @@ namespace HackMe.Controllers
     public class ProfileController : BaseController
     {
         private readonly IAgentService _agentService;
-        private readonly IChallengeTaskService _challengeTaskService;
         private readonly IMapper _mapper;
         private readonly ILogger<ProfileController> _logger;
 
@@ -17,10 +16,9 @@ namespace HackMe.Controllers
             IAgentService agentService,
             IChallengeTaskService challengeTaskService,
             IMapper mapper,
-            ILogger<ProfileController> logger)
+            ILogger<ProfileController> logger) : base(challengeTaskService)
         {
             _agentService = agentService;
-            _challengeTaskService = challengeTaskService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -37,8 +35,7 @@ namespace HackMe.Controllers
             var userIdentityName = GetUserIdentity();
             if (agent.CodeName != userIdentityName)
             {
-                await _challengeTaskService.CreateResult(userIdentityName, (int)ChallengeTaskType.UnauthorizedProfile);
-                ViewBag.ShowBanner = true;
+                await CreateChallengeResult(ChallengeTaskType.UnauthorizedProfile);
             }
 
             var viewModel = _mapper.Map<AgentViewModel>(agent);

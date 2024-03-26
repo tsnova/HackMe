@@ -24,7 +24,7 @@ body {
 .form-signin {
     max-width: 600px;
     padding: 1rem;
-    margin-top: 200px !important;
+    margin-top: 150px !important;
 }
 
 .form-signin .form-floating:focus-within {

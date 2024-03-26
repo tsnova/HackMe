@@ -9,7 +9,6 @@ namespace HackMe.Controllers
     public class NewsController : BaseController
     {
         private readonly IAgentService _agentService;
-        private readonly IChallengeTaskService _challengeTaskService;
         private readonly IMapper _mapper;
         private readonly ILogger<ProfileController> _logger;
 
@@ -17,10 +16,9 @@ namespace HackMe.Controllers
             IAgentService agentService,
             IChallengeTaskService challengeTaskService,
             IMapper mapper,
-            ILogger<ProfileController> logger)
+            ILogger<ProfileController> logger) : base(challengeTaskService)
         {
             _agentService = agentService;
-            _challengeTaskService = challengeTaskService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -54,7 +52,7 @@ namespace HackMe.Controllers
 
             if (bool.TryParse(showClassifedDataCookie, out var showClassifedData) && showClassifedData)
             {
-                await _challengeTaskService.CreateResult(GetUserIdentity(), (int)ChallengeTaskType.ShowClassifiedData);
+                await CreateChallengeResult(ChallengeTaskType.ShowClassifiedData);
             }
 
             return showClassifedData;

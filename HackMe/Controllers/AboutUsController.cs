@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HackMe.Application.Enums;
+using HackMe.Application.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HackMe.Controllers
 {
@@ -6,13 +8,16 @@ namespace HackMe.Controllers
     {
         private readonly ILogger<AboutUsController> _logger;
 
-        public AboutUsController(ILogger<AboutUsController> logger)
+        public AboutUsController(
+            IChallengeTaskService challengeTaskService,
+            ILogger<AboutUsController> logger) : base(challengeTaskService)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            await CreateChallengeResult(ChallengeTaskType.Login);
             return View();
         }
     }

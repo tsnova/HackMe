@@ -9,7 +9,7 @@ namespace HackMe.Controllers
         private readonly ILogger<TaskController> _logger;
 
         public TaskController(IChallengeTaskService challengeTaskService,
-            ILogger<TaskController> logger)
+            ILogger<TaskController> logger) : base(challengeTaskService)
         {
             _challengeTaskService = challengeTaskService;
             _logger = logger;

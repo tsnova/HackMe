@@ -15,7 +15,7 @@ namespace HackMe.Infrastructure.Data
         IList<News> GetNewsList(bool includeClassified);
         News? GetNewsItem(int id);
 
-        Task CreateChallengeResult(string agentCodeName, int taskId);
+        Task<bool> CreateChallengeResult(string agentCodeName, int taskId);
         Task<IList<ChallangeResultDetailsDto>> GetAllChallenges(string agentCodeName);
     }
 
@@ -82,22 +82,23 @@ namespace HackMe.Infrastructure.Data
             return _dbContext.News.SingleOrDefault(x => x.Id == id && x.IsActive);
         }
 
-        public async Task CreateChallengeResult(string agentCodeName, int taskId)
+        public async Task<bool> CreateChallengeResult(string agentCodeName, int taskId)
         {
-            var item = await _dbContext.ChallengeResults
-                            .SingleOrDefaultAsync(x => x.AgentCodeName == agentCodeName && x.ChallangeTaskId == taskId);
+            var isCompleted = await _dbContext.ChallengeResults
+                            .AnyAsync(x => x.AgentCodeName == agentCodeName && x.ChallangeTaskId == taskId);
 
-            if (item != null) return;
+            if (isCompleted) return false;
 
-            item = new ChallengeResult
+            var result = new ChallengeResult
             {
                 AgentCodeName = agentCodeName,
                 ChallangeTaskId = taskId,
                 CompletedOn = DateTime.Now,
             };
 
-            _dbContext.ChallengeResults.Add(item);
+            _dbContext.ChallengeResults.Add(result);
             await _dbContext.SaveChangesAsync();
+            return true;
         }
 
         public async Task<IList<ChallangeResultDetailsDto>> GetAllChallenges(string agentCodeName)
