@@ -9,9 +9,9 @@ namespace HackMe.Application.Services
         Task<Agent?> GetAgent(string codeName);
         Task<bool> UpdateActiveMission(string codeName, string mission);
 
-        Task<int> CountNews();
-        IList<News> GetNewsList(bool includeClassified);
-        News? GetNewsItem(int id);
+        Task<int> CountMissions();
+        IList<Mission> GetMissionsList(bool includeClassified);
+        Mission? GetMission(int id);
     }
 
     public class AgentService : IAgentService
@@ -23,9 +23,9 @@ namespace HackMe.Application.Services
             _repository = repository;
         }
 
-        public Task<int> CountNews()
+        public Task<int> CountMissions()
         {
-            return _repository.CountNews();
+            return _repository.CountMissions();
         }
 
         public Task<Agent?> GetAgent(string codeName)
@@ -33,14 +33,14 @@ namespace HackMe.Application.Services
             return _repository.GetAgent(codeName);
         }
 
-        public News? GetNewsItem(int id)
+        public Mission? GetMission(int id)
         {
-            return _repository.GetNewsItem(id);
+            return _repository.GetMission(id);
         }
 
-        public IList<News> GetNewsList(bool includeClassified)
+        public IList<Mission> GetMissionsList(bool includeClassified)
         {
-            return _repository.GetNewsList(includeClassified);
+            return _repository.GetMissionList(includeClassified);
         }
 
         public async Task<bool> UpdateActiveMission(string codeName, string mission)

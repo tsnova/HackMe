@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HackMe.Controllers
 {
-    public class TaskController : BaseController
+    public class TasksController : BaseController
     {
         private readonly IChallengeTaskService _challengeTaskService;
         private readonly IMapper _mapper;
-        private readonly ILogger<TaskController> _logger;
+        private readonly ILogger<TasksController> _logger;
 
-        public TaskController(IChallengeTaskService challengeTaskService,
+        public TasksController(IChallengeTaskService challengeTaskService,
             IMapper mapper,
-            ILogger<TaskController> logger) : base(challengeTaskService)
+            ILogger<TasksController> logger) : base(challengeTaskService)
         {
             _challengeTaskService = challengeTaskService;
             _mapper = mapper;

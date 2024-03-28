@@ -12,9 +12,9 @@ namespace HackMe.Infrastructure.Data
         string? ValidateAgentLogin(string codeName, string password);
         bool UpdateAgentMission(string codeName, string mission);
 
-        Task<int> CountNews();
-        IList<News> GetNewsList(bool includeClassified);
-        News? GetNewsItem(int id);
+        Task<int> CountMissions();
+        IList<Mission> GetMissionList(bool includeClassified);
+        Mission? GetMission(int id);
 
         Task<bool> CreateChallengeResult(string agentCodeName, int taskId);
         Task<IList<ChallangeResultDetailsDto>> GetAllChallenges(string agentCodeName);
@@ -60,12 +60,12 @@ namespace HackMe.Infrastructure.Data
             }
         }
 
-        public Task<int> CountNews()
+        public Task<int> CountMissions()
         {
             return _dbContext.News.CountAsync();
         }
 
-        public IList<News> GetNewsList(bool includeClassified)
+        public IList<Mission> GetMissionList(bool includeClassified)
         {
             var query = _dbContext.News
                             .Where(x => x.IsActive);
@@ -78,7 +78,7 @@ namespace HackMe.Infrastructure.Data
                     .ToList();
         }
 
-        public News? GetNewsItem(int id)
+        public Mission? GetMission(int id)
         {
             return _dbContext.News.SingleOrDefault(x => x.Id == id && x.IsActive);
         }

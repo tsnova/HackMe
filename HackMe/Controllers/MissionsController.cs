@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HackMe.Controllers
 {
-    public class NewsController : BaseController
+    public class MissionsController : BaseController
     {
         private readonly IAgentService _agentService;
         private readonly IMapper _mapper;
 
-        public NewsController(
+        public MissionsController(
             IAgentService agentService,
             IChallengeTaskService challengeTaskService,
             IMapper mapper) : base(challengeTaskService)
@@ -22,17 +22,17 @@ namespace HackMe.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var classified = await GetClassifiedSetting();
-            var results = _agentService.GetNewsList(classified);
+            var classified = await GetClassifiedSetting(false);
+            var results = _agentService.GetMissionsList(classified);
 
-            var viewModel = _mapper.Map<IEnumerable<NewsViewModel>>(results);
+            var viewModel = _mapper.Map<IEnumerable<MissionViewModel>>(results);
             return View(viewModel);
         }
 
-        public async Task<IActionResult> NewsDetail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
-            var classified = await GetClassifiedSetting();
-            var result = _agentService.GetNewsItem(id);
+            var classified = await GetClassifiedSetting(true);
+            var result = _agentService.GetMission(id);
 
             if (result == null || result.IsClassified != classified)
             {
@@ -44,15 +44,15 @@ namespace HackMe.Controllers
                 return RedirectToAction("UnAuthorized", "Error");
             }
 
-            var viewModel = _mapper.Map<NewsViewModel>(result);
+            var viewModel = _mapper.Map<MissionViewModel>(result);
             return View(viewModel);
         }
 
-        private async Task<bool> GetClassifiedSetting()
+        private async Task<bool> GetClassifiedSetting(bool createResult)
         {
             var showClassifedDataCookie = HttpContext.Request.Cookies["showClassifiedData"];
 
-            if (bool.TryParse(showClassifedDataCookie, out var showClassifedData) && showClassifedData)
+            if (bool.TryParse(showClassifedDataCookie, out var showClassifedData) && showClassifedData && createResult)
             {
                 await CreateChallengeResult(ChallengeTaskType.ShowClassifiedData);
             }

@@ -1,12 +1,13 @@
-﻿namespace HackMe.Application.Models
+﻿namespace HackMe.Models
 {
-    public class News
+    public class MissionViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public string UrlKey { get; set; } = null!;
-        public bool IsActive { get; set; }
         public bool IsClassified { get; set; }
         public string? Description { get; set; }
+
+        public string ShortDescription
+            => Description != null ? Description.Substring(0, 100) : string.Empty; 
     }
 }

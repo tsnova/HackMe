@@ -1,0 +1,40 @@
+﻿@model ICollection<MissionViewModel>
+@{
+    ViewData["Title"] = "Active Missions";
+}
+
+<div class="site-content">
+    <div class="card">
+        <div class="card-body">
+            <form class="row">
+                <div class="col-md-2">
+                    <b>Search missions</b>
+                </div>
+                <div class="col-md-6">
+                    <label for="searchKey" class="visually-hidden">Search</label>
+                    <input type="text" class="form-control" id="searchKey" placeholder="Enter a text">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3">Search</button>
+                </div>
+            </form>
+            <b>Total results: @Model.Count</b>
+        </div>
+    </div><br /><br />
+
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            @* <img src="..." class="card-img-top" alt="..."> *@
+            <div class="card-body">
+                <h5 class="card-title">@item.Name</h5>
+                @if (item.IsClassified)
+                {
+                    <span class="badge badge-completed rounded-pill">Classified</span>
+                }
+                <p class="card-text">@item.Description ...</p>
+                <a href="#" class="btn btn-primary">Read more</a>
+            </div>
+        </div>
+    }
+</div>

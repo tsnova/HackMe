@@ -12,5 +12,8 @@
         public string? PersonalData { get; set; }
         public string? ActiveMission { get; set; }
         public int TotalSuccessfulMissions { get; set; }
+
+        public ICollection<MissionComment> Comments { get; set; }
+            = new List<MissionComment>();
     }
 }
