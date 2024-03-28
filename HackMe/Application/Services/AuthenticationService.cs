@@ -55,8 +55,9 @@ namespace HackMe.Application.Services
             await httpContext.SignInAsync("customAuthentication", principal);
 
             httpContext.Session.SetString("codeName", username);
-            httpContext.Response.Cookies.Delete("showClassifiedData");
-            httpContext.Response.Cookies.Append("showClassifiedData", false.ToString());
+            const string key = "showClassifiedData";
+            httpContext.Response.Cookies.Delete(key);
+            httpContext.Response.Cookies.Append(key, false.ToString());
         }
     }
 }

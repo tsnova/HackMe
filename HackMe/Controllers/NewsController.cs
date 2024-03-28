@@ -50,7 +50,7 @@ namespace HackMe.Controllers
 
         private async Task<bool> GetClassifiedSetting()
         {
-            var showClassifedDataCookie = HttpContext.Request.Cookies["showClassifedData"];
+            var showClassifedDataCookie = HttpContext.Request.Cookies["showClassifiedData"];
 
             if (bool.TryParse(showClassifedDataCookie, out var showClassifedData) && showClassifedData)
             {
