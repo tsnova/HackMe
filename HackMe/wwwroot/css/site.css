@@ -21,6 +21,15 @@ body {
   margin-bottom: 60px;
 }
 
+.badge-completed {
+    background-color: forestgreen;
+    font-size: 14px !important;
+}
+.badge-todo {
+    background-color: darkorange;
+    font-size: 14px !important;
+}
+
 .form-signin {
     max-width: 600px;
     padding: 1rem;

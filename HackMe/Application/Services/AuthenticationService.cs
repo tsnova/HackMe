@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-using Azure;
-using HackMe.Application.Helpers;
+﻿using HackMe.Application.Helpers;
 using HackMe.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
