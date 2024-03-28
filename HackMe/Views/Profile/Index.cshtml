@@ -49,12 +49,12 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Update active mission</h5>
-            <form asp-action="Update" method="post">
+            <form asp-action="Update" asp-route-codeName="@Model.CodeName" method="post">
                 <div class="form-floating">
                     <input asp-for="ActiveMission" class="form-control" required placeholder="Active mission" />
                     <label asp-for="ActiveMission">Active mission:</label>
                 </div><br />
-                <input asp-for="CodeName" type="hidden" value="@Model.CodeName" />
+                @* <input asp-for="CodeName" type="hidden" value="@Model.CodeName" /> *@
                 <button class="btn btn-primary w-100 py-2" type="submit">Save</button>
             </form>
         </div>

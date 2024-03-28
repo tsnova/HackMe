@@ -13,7 +13,7 @@ namespace HackMe.Infrastructure.Data
         bool UpdateAgentMission(string codeName, string mission);
 
         Task<int> CountMissions();
-        IList<Mission> GetMissionList(bool includeClassified);
+        IList<Mission> GetMissionList(string? searchKey, bool includeClassified);
         Mission? GetMission(int id);
 
         Task<bool> CreateChallengeResult(string agentCodeName, int taskId);
@@ -46,7 +46,7 @@ namespace HackMe.Infrastructure.Data
 
         public string? ValidateAgentLogin(string codeName, string password)
         {
-            var query = $"SELECT CodeName FROM Agent WHERE CodeName = '{codeName}' AND Password = '{password}'";
+            var query = $"SELECT COUNT(*) FROM Agent WHERE CodeName = '{codeName}' AND Password = '{password}'";
 
             try
             {
@@ -62,25 +62,38 @@ namespace HackMe.Infrastructure.Data
 
         public Task<int> CountMissions()
         {
-            return _dbContext.News.CountAsync();
+            return _dbContext.Missions.CountAsync();
         }
 
-        public IList<Mission> GetMissionList(bool includeClassified)
+        public IList<Mission> GetMissionList(string? searchKey, bool includeClassified)
         {
-            var query = _dbContext.News
-                            .Where(x => x.IsActive);
+            var classified = includeClassified ? " AND IsClassified = 1" : " AND IsClassified = 0";
 
-            if (!includeClassified)
-                query = query.Where(x => !x.IsClassified);
+            var query = @$"
+SELECT [Id]
+    ,[Name]
+    ,[UrlKey]
+    ,[IsActive]
+    ,[IsClassified]
+    ,[Description]
+FROM [dbo].[Mission]
+WHERE [Description] LIKE '%{searchKey}%' AND IsActive = 1 {classified} ORDER BY Name";
 
-            return query
-                    .OrderBy(x => x.Name)
-                    .ToList();
+            try
+            {
+                var result = _dbContext.Missions.FromSqlRaw(query).ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred during querying missions: {ex.Message}");
+                return new List<Mission>();
+            }
         }
 
         public Mission? GetMission(int id)
         {
-            return _dbContext.News.SingleOrDefault(x => x.Id == id && x.IsActive);
+            return _dbContext.Missions.SingleOrDefault(x => x.Id == id && x.IsActive);
         }
 
         public async Task<bool> CreateChallengeResult(string agentCodeName, int taskId)

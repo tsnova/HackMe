@@ -10,7 +10,7 @@ namespace HackMe.Application.Services
         Task<bool> UpdateActiveMission(string codeName, string mission);
 
         Task<int> CountMissions();
-        IList<Mission> GetMissionsList(bool includeClassified);
+        IList<Mission> GetMissionsList(string? seachKey, bool includeClassified);
         Mission? GetMission(int id);
     }
 
@@ -38,9 +38,9 @@ namespace HackMe.Application.Services
             return _repository.GetMission(id);
         }
 
-        public IList<Mission> GetMissionsList(bool includeClassified)
+        public IList<Mission> GetMissionsList(string? searchKey, bool includeClassified)
         {
-            return _repository.GetMissionList(includeClassified);
+            return _repository.GetMissionList(searchKey, includeClassified);
         }
 
         public async Task<bool> UpdateActiveMission(string codeName, string mission)

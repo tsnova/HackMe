@@ -23,10 +23,20 @@ namespace HackMe.Controllers
         public async Task<IActionResult> Index()
         {
             var classified = await GetClassifiedSetting(false);
-            var results = _agentService.GetMissionsList(classified);
+            var results = _agentService.GetMissionsList(string.Empty, classified);
 
             var viewModel = _mapper.Map<IEnumerable<MissionViewModel>>(results);
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Search(string searchKey)
+        {
+            var classified = await GetClassifiedSetting(false);
+            var results = _agentService.GetMissionsList(searchKey, classified);
+
+            var viewModel = _mapper.Map<IEnumerable<MissionViewModel>>(results);
+            return View("Index", viewModel);
         }
 
         public async Task<IActionResult> Detail(int id)

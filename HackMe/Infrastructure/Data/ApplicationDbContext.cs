@@ -12,7 +12,9 @@ namespace HackMe.Infrastructure.Data
         }
 
         public DbSet<Agent> Agents { get; set; } = null!;
-        public DbSet<Mission> News { get; set; } = null!;
+        public DbSet<Mission> Missions { get; set; } = null!;
+        public DbSet<MissionComment> MissionComments { get; set; } = null!;
+
         public DbSet<ChallengeTask> ChallengeTasks { get; set; } = null!;
         public DbSet<ChallengeResult> ChallengeResults { get; set; } = null!;
 

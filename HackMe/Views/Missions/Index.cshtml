@@ -6,13 +6,13 @@
 <div class="site-content">
     <div class="card">
         <div class="card-body">
-            <form class="row">
+            <form asp-action="Search" class="row">
                 <div class="col-md-2">
                     <b>Search missions</b>
                 </div>
                 <div class="col-md-6">
                     <label for="searchKey" class="visually-hidden">Search</label>
-                    <input type="text" class="form-control" id="searchKey" placeholder="Enter a text">
+                    <input type="text" class="form-control" id="searchKey" name="searchKey" placeholder="Enter a text">
                 </div>
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary mb-3">Search</button>
