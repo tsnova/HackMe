@@ -10,6 +10,7 @@ namespace HackMe.Infrastructure.Data
         Task<Agent?> GetAgent(string codeName, string password);
         Task<Agent?> GetAgent(string codeName);
         string? ValidateAgentLogin(string codeName, string password);
+        bool UpdateAgentMission(string codeName, string mission);
 
         Task<int> CountNews();
         IList<News> GetNewsList(bool includeClassified);
@@ -126,6 +127,25 @@ namespace HackMe.Infrastructure.Data
             }
 
             return list;
+        }
+
+        public bool UpdateAgentMission(string codeName, string mission)
+        {
+            var query = @$"
+UPDATE Agent 
+SET ActiveMission = '{mission}'
+WHERE CodeName = '{codeName}'";
+
+            try
+            {
+                _dbContext.Database.ExecuteSqlRaw(query);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred during execution: {ex.Message}");
+                return false;
+            }
         }
     }
 }

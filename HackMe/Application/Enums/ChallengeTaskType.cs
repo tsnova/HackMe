@@ -7,5 +7,6 @@
         XSSAttack = 3,
         CountNews = 4,
         ShowClassifiedData = 5,
+        UpdateOthersProfile = 1002,
     }
 }

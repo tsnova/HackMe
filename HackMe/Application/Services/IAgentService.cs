@@ -1,4 +1,5 @@
-﻿using HackMe.Application.Models;
+﻿using HackMe.Application.Helpers;
+using HackMe.Application.Models;
 using HackMe.Infrastructure.Data;
 
 namespace HackMe.Application.Services
@@ -6,6 +7,7 @@ namespace HackMe.Application.Services
     public interface IAgentService
     {
         Task<Agent?> GetAgent(string codeName);
+        Task<bool> UpdateActiveMission(string codeName, string mission);
 
         Task<int> CountNews();
         IList<News> GetNewsList(bool includeClassified);
@@ -39,6 +41,17 @@ namespace HackMe.Application.Services
         public IList<News> GetNewsList(bool includeClassified)
         {
             return _repository.GetNewsList(includeClassified);
+        }
+
+        public async Task<bool> UpdateActiveMission(string codeName, string mission)
+        {
+            if (await _repository.AgentExists(codeName)
+                && InputHelper.IsAllowedSqlInjection(mission))
+            {
+                return _repository.UpdateAgentMission(codeName, mission);
+            }
+
+            return false;
         }
     }
 }

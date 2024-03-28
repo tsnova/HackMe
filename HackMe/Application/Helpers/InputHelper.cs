@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace HackMe.Application.Helpers
 {
@@ -16,7 +17,37 @@ namespace HackMe.Application.Helpers
 
         public static bool IsAllowedSqlInjection(string input)
         {
-            return IsSqlInjection(input) && !ContainsHarmfulKeywords(input);
+            if (!IsSqlInjection(input)) return true;
+
+            return !ContainsHarmfulKeywords(input);
+        }
+
+        public static bool HasPotentialXss(string input)
+        {
+            string[] xssPatterns =
+            [
+                "<script[^>]*>[^<]*</script>",
+                "javascript:",
+                "onload(.*?)=",
+                "eval\\((.*?)\\)",
+                "expression\\((.*?)\\)",
+                "url\\((.*?)\\)",
+                "<\\s*iframe[^>]*>",
+                "<\\s*img[^>]*>",
+                "alert\\((.*?)\\)",
+                "confirm\\((.*?)\\)",
+                "prompt\\((.*?)\\)"
+            ];
+
+            foreach (string pattern in xssPatterns)
+            {
+                if (Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool ContainsHarmfulKeywords(string input)

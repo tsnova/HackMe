@@ -1,4 +1,6 @@
-﻿using HackMe.Application.Helpers;
+﻿using Azure.Core;
+using Azure;
+using HackMe.Application.Helpers;
 using HackMe.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
@@ -55,7 +57,8 @@ namespace HackMe.Application.Services
             await httpContext.SignInAsync("customAuthentication", principal);
 
             httpContext.Session.SetString("codeName", username);
-            httpContext.Response.Cookies.Append("showClassifedData", true.ToString());
+            httpContext.Response.Cookies.Delete("showClassifiedData");
+            httpContext.Response.Cookies.Append("showClassifiedData", false.ToString());
         }
     }
 }

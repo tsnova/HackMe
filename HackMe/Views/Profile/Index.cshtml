@@ -3,54 +3,60 @@
     ViewData["Title"] = "Agent's profile";
 }
 
-<div class="site-content">
-    <div class="row form-profile">
-        <div class="col-md-12">
-            <label class="form-label">Codename</label>
-            <b>@Model.CodeName</b>
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">Firstname:</label>
-            <input type="text" readonly class="form-control-plaintext" value="@Model.FirstName">
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">Lastname:</label>
-            <input type="text" readonly class="form-control-plaintext" value="@Model.LastName">
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Ranking:</label>
-            <input type="text" readonly class="form-control-plaintext" value="@Model.Ranking">
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Decommissioned:</label>
-            <input type="text" readonly class="form-control-plaintext" value="@(Model.IsDecommissioned ? "Yes" : "No")">
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">Succesful missions:</label>
-            <input type="text" readonly class="form-control-plaintext" value="@Model.TotalSuccessfulMissions">
-        </div>
-        <div class="col-12">
-            <label for="inputAddress" class="form-label">Personal data:</label>
-            <input type="text" readonly class="form-control-plaintext" value="@Model.PersonalData">
-        </div>
-        <div class="col-12">
-            <label for="ActiveMission" class="form-label">Active mission:</label>
-            <input type="text" readonly class="form-control-plaintext" value="@Model.ActiveMission">
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">Profile</h2>
+        <div class="row form-profile">
+            <div class="col-md-12">
+                <label class="form-label">Codename</label>
+                <b>@Model.CodeName</b>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Firstname:</label>
+                <input type="text" readonly class="form-control-plaintext" value="@Model.FirstName">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Lastname:</label>
+                <input type="text" readonly class="form-control-plaintext" value="@Model.LastName">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Ranking:</label>
+                <input type="text" readonly class="form-control-plaintext" value="@Model.Ranking">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Decommissioned:</label>
+                <input type="text" readonly class="form-control-plaintext" value="@(Model.IsDecommissioned ? "Yes" : "No")">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Succesful missions:</label>
+                <input type="text" readonly class="form-control-plaintext" value="@Model.TotalSuccessfulMissions">
+            </div>
+            <div class="col-12">
+                <label for="inputAddress" class="form-label">Personal data:</label>
+                <input type="text" readonly class="form-control-plaintext" value="@Model.PersonalData">
+            </div>
+            <div class="col-12">
+                <label for="ActiveMission" class="form-label">Active mission:</label><br />
+                @Html.Raw(Model.ActiveMission)
+            </div>
         </div>
     </div>
+</div>
 
+@if (Model.CanUpdate)
+{
+    <br />
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Update active mission</h5>
             <form asp-action="Update" method="post">
-                @Html.AntiForgeryToken()
                 <div class="form-floating">
                     <input asp-for="ActiveMission" class="form-control" required placeholder="Active mission" />
                     <label asp-for="ActiveMission">Active mission:</label>
                 </div><br />
+                <input asp-for="CodeName" type="hidden" value="@Model.CodeName" />
                 <button class="btn btn-primary w-100 py-2" type="submit">Save</button>
             </form>
-        </div>        
+        </div>
     </div>
-</div>
-
+}

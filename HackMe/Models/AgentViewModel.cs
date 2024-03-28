@@ -12,5 +12,7 @@
         public string? PersonalData { get; set; }
         public string? ActiveMission { get; set; }
         public int TotalSuccessfulMissions { get; set; }
+
+        public bool CanUpdate { get; set; }
     }
 }
