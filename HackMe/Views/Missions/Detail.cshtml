@@ -1,0 +1,45 @@
+﻿@model MissionViewModel
+@{
+    ViewData["Title"] = Model.Name + " - Mission";
+}
+
+<div class="site-content">
+    <div class="card">
+        @* <img src="..." class="card-img-top" alt="..."> *@
+        <div class="card-body">
+            <h1 class="card-title">@Model.Name</h1>
+            @if (Model.IsClassified)
+            {
+                <span class="badge badge-completed rounded-pill">Classified</span>
+            }
+            <p class="card-text">@Model.Description</p>
+        </div>
+    </div>
+
+    <br />
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Add comment</h5>
+            <form asp-controller="Missions" asp-action="AddComment" asp-route-id="@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+                <div class="form-floating">
+                    <input id="comment" name="comment" class="form-control" required placeholder="Comment ..." maxlength="200" />
+                    <label for="comment">Comment:</label>
+                </div><br />
+                <button class="btn btn-primary w-100 py-2" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    @if (Model.Comments.Count > 0)
+    {
+        <br /><br />
+        <h3>Comments</h3>
+        <ul class="list-group">
+        @foreach (var item in Model.Comments)
+        {
+            <li class="list-group-item">@Html.Raw(item.Comment)</li>           
+        }
+        </ul>
+    }
+</div>

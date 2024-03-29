@@ -1,4 +1,6 @@
-﻿namespace HackMe.Models
+﻿using HackMe.Application.Models;
+
+namespace HackMe.Models
 {
     public class MissionViewModel
     {
@@ -8,6 +10,9 @@
         public string? Description { get; set; }
 
         public string ShortDescription
-            => Description != null ? Description.Substring(0, 100) : string.Empty; 
+            => Description != null && Description.Length > 100 ? Description[..100] : string.Empty;
+
+        public IReadOnlyCollection<MissionComment> Comments { get; set; }
+            = Array.Empty<MissionComment>();
     }
 }

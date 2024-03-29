@@ -10,6 +10,7 @@ namespace HackMe.Application.AutoMapperProfiles
         {
             this.CreateMap<Domain.Agent, HackMe.Models.AgentViewModel>();
             this.CreateMap<Domain.Mission, HackMe.Models.MissionViewModel>();
+            this.CreateMap<MissionDetailsDto, HackMe.Models.MissionViewModel>();
             this.CreateMap<ChallangeResultDetailsDto, HackMe.Models.ChallangeResultViewModel>();
         }
     }

@@ -15,6 +15,8 @@ namespace HackMe.Infrastructure.Data
         Task<int> CountMissions();
         IList<Mission> GetMissionList(string? searchKey, bool includeClassified);
         Mission? GetMission(int id);
+        IReadOnlyCollection<MissionComment> GetMissionComments(string codeName, int missionId);
+        void CreateMissionComment(string codeName, int missionId, string comment);
 
         Task<ChallengeTask?> GetChallenge(int id);
         Task<bool> CreateChallengeResult(string agentCodeName, int taskId);
@@ -160,6 +162,25 @@ WHERE [Description] LIKE '%{searchKey}%' AND IsActive = 1 {classified} ORDER BY 
         public Task<ChallengeTask?> GetChallenge(int id)
         {
             return _dbContext.ChallengeTasks.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public IReadOnlyCollection<MissionComment> GetMissionComments(string codeName, int missionId)
+        {
+            return _dbContext.MissionComments
+                .Where(x => x.AgentCodeName == codeName && x.MissionId == missionId).ToList();
+        }
+
+        public void CreateMissionComment(string codeName, int missionId, string comment)
+        {
+            var missionComment = new MissionComment
+            {
+                AgentCodeName = codeName,
+                MissionId = missionId,
+                Comment = comment
+            };
+
+            _dbContext.MissionComments.Add(missionComment);
+            _dbContext.SaveChanges();
         }
     }
 }

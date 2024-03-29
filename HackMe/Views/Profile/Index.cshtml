@@ -52,7 +52,7 @@
             <form asp-action="Update" asp-route-codeName="@Model.CodeName" method="post">
                 @Html.AntiForgeryToken()
                 <div class="form-floating">
-                    <input asp-for="ActiveMission" class="form-control" required placeholder="Active mission" />
+                    <input asp-for="ActiveMission" class="form-control" required placeholder="Active mission" maxlength="200" />
                     <label asp-for="ActiveMission">Active mission:</label>
                 </div><br />
                 @* <input asp-for="CodeName" type="hidden" value="@Model.CodeName" /> *@

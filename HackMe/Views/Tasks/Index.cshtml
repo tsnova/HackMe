@@ -37,7 +37,7 @@
                     <div class="row">
                         <form asp-action="UpdateMissionsCounter" method="post">
                             <div class="form-floating">
-                                <input id="counter" name="counter" class="form-control" required placeholder="Enter a number" />
+                                <input id="counter" name="counter" class="form-control" required placeholder="Enter a number" maxlength="3" />
                                 <label for="counter">Total missions in the database:</label>
                             </div><br />
                             <button class="btn btn-primary w-100 py-2" type="submit">Submit</button>

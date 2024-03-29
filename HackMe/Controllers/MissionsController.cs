@@ -40,12 +40,12 @@ namespace HackMe.Controllers
             return View("Index", viewModel);
         }
 
-        public async Task<IActionResult> Detail(int id)
+        public async Task<IActionResult> Detail(int id, bool? showBanner)
         {
             var classified = await GetClassifiedSetting(true);
-            var result = _agentService.GetMission(id);
+            var result = _agentService.GetMissionDetails(GetUserIdentity(), id);
 
-            if (result == null || result.IsClassified != classified)
+            if (result == null)
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
@@ -55,8 +55,25 @@ namespace HackMe.Controllers
                 return RedirectToAction("UnAuthorized", "Error");
             }
 
+            if (showBanner == true)
+            {
+                SetBanner(true);
+            }
+
             var viewModel = _mapper.Map<MissionViewModel>(result);
             return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddComment([FromRoute] int id, string comment)
+        {
+            var identity = GetUserIdentity();            
+            var showBanner = await CheckPotentialXSS(comment);
+
+            _agentService.CreateMissionComment(identity, id, comment);
+
+            return RedirectToAction("Detail", new { id, showBanner });
         }
 
         private async Task<bool> GetClassifiedSetting(bool createResult)
