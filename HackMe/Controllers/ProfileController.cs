@@ -43,6 +43,7 @@ namespace HackMe.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(string codeName, string activeMission)
         {
             var identity = GetUserIdentity();

@@ -16,6 +16,7 @@ namespace HackMe.Infrastructure.Data
         IList<Mission> GetMissionList(string? searchKey, bool includeClassified);
         Mission? GetMission(int id);
 
+        Task<ChallengeTask?> GetChallenge(int id);
         Task<bool> CreateChallengeResult(string agentCodeName, int taskId);
         Task<IList<ChallangeResultDetailsDto>> GetAllChallenges(string agentCodeName);
     }
@@ -67,7 +68,7 @@ namespace HackMe.Infrastructure.Data
 
         public IList<Mission> GetMissionList(string? searchKey, bool includeClassified)
         {
-            var classified = includeClassified ? " AND IsClassified = 1" : " AND IsClassified = 0";
+            var classified = !includeClassified ? " AND IsClassified = 0" : string.Empty;
 
             var query = @$"
 SELECT [Id]
@@ -132,6 +133,7 @@ WHERE [Description] LIKE '%{searchKey}%' AND IsActive = 1 {classified} ORDER BY 
                     TaskId = task.Id,
                     TaskName = task.Name,
                     TaskDescription = task.Description,
+                    ExpectedResult = task.ExpectedResult,
                     DifficultyLevel = task.DifficultyLevel,
                     Score = task.Score,
                     CompletedOn = result?.CompletedOn,
@@ -144,21 +146,20 @@ WHERE [Description] LIKE '%{searchKey}%' AND IsActive = 1 {classified} ORDER BY 
 
         public bool UpdateAgentMission(string codeName, string mission)
         {
-            var query = @$"
-UPDATE Agent 
-SET ActiveMission = '{mission}'
-WHERE CodeName = '{codeName}'";
-
-            try
+            var agent = _dbContext.Agents.SingleOrDefault(x => x.CodeName == codeName);
+            if (agent == null)
             {
-                _dbContext.Database.ExecuteSqlRaw(query);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred during execution: {ex.Message}");
                 return false;
             }
+
+            agent.ActiveMission = mission;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public Task<ChallengeTask?> GetChallenge(int id)
+        {
+            return _dbContext.ChallengeTasks.SingleOrDefaultAsync(x => x.Id == id);
         }
     }
 }

@@ -30,6 +30,7 @@ namespace HackMe.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Search(string searchKey)
         {
             var classified = await GetClassifiedSetting(false);

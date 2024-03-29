@@ -1,18 +1,24 @@
-﻿@model IEnumerable<ChallangeResultViewModel>
+﻿@model ChallangeResultsViewModel
+@using HackMe.Application.Enums;
 @{
     ViewData["Title"] = "Challenges progress";
+
+    var completedCountMissions = Model.HasCompletedTask(ChallengeTaskType.CountMissions);
 }
 
 <div>
-    <ol class="list-group">
+    @if (Model.ValidationMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <p>@Model.ValidationMessage</p>
+        </div>
+    }
 
-        @foreach (var task in Model)
-        {
-            <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-2 me-auto">
-                    <div class="fw-bold">@task.TaskName</div>
-                    <p>@task.TaskDescription</p>
-                </div>
+    @foreach (var task in Model.Results)
+    {
+        <div class="card">
+            <div class="card-header">
+                @task.TaskName   
                 @if (task.IsCompleted)
                 {
                     <span class="badge badge-completed rounded-pill">completed</span>
@@ -21,7 +27,24 @@
                 {
                     <span class="badge badge-todo rounded-pill">to do</span>
                 }
-            </li>
-        }
-    </ol>
+            </div>
+            <div class="card-body">
+                <p class="card-text">@task.TaskDescription</p>
+
+                @if (task.TaskId == (int)ChallengeTaskType.CountMissions && !completedCountMissions)
+                {
+                    <br />
+                    <div class="row">
+                        <form asp-action="UpdateMissionsCounter" method="post">
+                            <div class="form-floating">
+                                <input id="counter" name="counter" class="form-control" required placeholder="Enter a number" />
+                                <label for="counter">Total missions in the database:</label>
+                            </div><br />
+                            <button class="btn btn-primary w-100 py-2" type="submit">Submit</button>
+                        </form>
+                    </div><br />
+                }
+            </div>
+        </div><br />
+    }
 </div>

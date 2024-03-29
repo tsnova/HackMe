@@ -27,9 +27,9 @@ namespace HackMe.Controllers
             return userIdentity;
         }
 
-        protected async Task<bool> CreateChallengeResult(ChallengeTaskType type)
+        protected async Task<bool> CreateChallengeResult(ChallengeTaskType type, string? input = null)
         {
-            var successful = await _challengeTaskService.CreateResult(GetUserIdentity(), (int)type);
+            var successful = await _challengeTaskService.CreateResult(GetUserIdentity(), (int)type, input);
             if (successful)
             {
                 SetBanner(successful);

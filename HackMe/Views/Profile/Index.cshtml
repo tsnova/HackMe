@@ -50,6 +50,7 @@
         <div class="card-body">
             <h5 class="card-title">Update active mission</h5>
             <form asp-action="Update" asp-route-codeName="@Model.CodeName" method="post">
+                @Html.AntiForgeryToken()
                 <div class="form-floating">
                     <input asp-for="ActiveMission" class="form-control" required placeholder="Active mission" />
                     <label asp-for="ActiveMission">Active mission:</label>

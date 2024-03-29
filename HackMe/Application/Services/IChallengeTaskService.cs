@@ -7,7 +7,7 @@ namespace HackMe.Application.Services
     {
         Task<TeamChallengeDto> GetAll(string agentCodeName);
 
-        Task<bool> CreateResult(string agentCodeName, int taskId);
+        Task<bool> CreateResult(string agentCodeName, int taskId, string? input);
     }
 
     public class ChallengeTaskService : IChallengeTaskService
@@ -33,10 +33,21 @@ namespace HackMe.Application.Services
             return dto;
         }
 
-        public async Task<bool> CreateResult(string agentCodeName, int taskId)
+        public async Task<bool> CreateResult(string agentCodeName, int taskId, string? input)
         {
             if (await _repository.AgentExists(agentCodeName))
             {
+                var task = await _repository.GetChallenge(taskId);
+                if (task == null)
+                {
+                    return false;
+                }
+
+                if (task.ExpectedResult != null && input != null && input != task.ExpectedResult)
+                {
+                    return false;
+                }
+
                 return await _repository.CreateChallengeResult(agentCodeName, taskId);
             }
 

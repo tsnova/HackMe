@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HackMe.Application.Enums;
 using HackMe.Application.Services;
 using HackMe.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -22,10 +23,37 @@ namespace HackMe.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var result = await _challengeTaskService.GetAll(GetUserIdentity());
-            var viewModel = _mapper.Map<IEnumerable<ChallangeResultViewModel>>(result.Results);
-
+            var viewModel = await GetResults();
             return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateMissionsCounter(int counter)
+        {            
+            if (counter < 0)
+            {
+                return View("Index", await GetResults());
+            }
+
+            var success = await CreateChallengeResult(ChallengeTaskType.CountMissions, counter.ToString());
+            var viewModel = await GetResults();
+
+            if (!success && !viewModel.HasCompletedTask(ChallengeTaskType.CountMissions))
+            {
+                viewModel.ValidationMessage = "Wrong answer! please try again.";
+            }
+
+            return View("Index", viewModel);
+        }
+
+        private async Task<ChallangeResultsViewModel> GetResults()
+        {
+            var result = await _challengeTaskService.GetAll(GetUserIdentity());
+            return new ChallangeResultsViewModel
+            {
+                Results = _mapper.Map<IEnumerable<ChallangeResultViewModel>>(result.Results)
+            };
         }
     }
 }
