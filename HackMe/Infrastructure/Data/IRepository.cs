@@ -15,6 +15,7 @@ namespace HackMe.Infrastructure.Data
         Task<int> CountMissions();
         IList<Mission> GetMissionList(string? searchKey, bool includeClassified);
         Mission? GetMission(int id);
+        Mission? GetMission(string urlKey);
         IReadOnlyCollection<MissionComment> GetMissionComments(string codeName, int missionId);
         void CreateMissionComment(string codeName, int missionId, string comment);
 
@@ -92,6 +93,11 @@ WHERE [Description] LIKE '%{searchKey}%' AND IsActive = 1 {classified} ORDER BY 
                 Console.WriteLine($"An error occurred during querying missions: {ex.Message}");
                 return new List<Mission>();
             }
+        }
+
+        public Mission? GetMission(string urlKey)
+        {
+            return _dbContext.Missions.SingleOrDefault(x => x.UrlKey == urlKey && x.IsActive);
         }
 
         public Mission? GetMission(int id)

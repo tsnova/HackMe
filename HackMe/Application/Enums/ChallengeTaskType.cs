@@ -4,9 +4,9 @@
     {
         Login = 1,
         UnauthorizedProfile = 2,
-        XSSAttack = 3,
-        CountMissions = 4,
-        ShowClassifiedData = 5,
-        UpdateOthersProfile = 1002,
+        UpdateOthersProfile = 3,
+        XSSAttack = 4,
+        CountMissions = 5,
+        ShowClassifiedData = 6,
     }
 }

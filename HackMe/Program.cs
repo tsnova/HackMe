@@ -58,8 +58,13 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+        name: "missiondetails",
+        pattern: "/missions/{urlKey}",
+        defaults: new { controller = "Missions", action = "Detail" }
+    );
+app.MapControllerRoute(
         name: "notfound",
-        pattern: "/Error/{action=PageNotFound}",
+        pattern: "/error/{action=PageNotFound}",
         defaults: new { controller = "Error" }
     );
 app.MapControllerRoute(

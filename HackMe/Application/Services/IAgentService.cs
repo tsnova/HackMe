@@ -8,12 +8,12 @@ namespace HackMe.Application.Services
     public interface IAgentService
     {
         Task<Agent?> GetAgent(string codeName);
-        Task<bool> UpdateActiveMission(string codeName, string mission);
+        Task<bool> UpdateAgentActiveMission(string codeName, string mission);
 
         Task<int> CountMissions();
         IList<Mission> GetMissionsList(string? seachKey, bool includeClassified);
-        MissionDetailsDto? GetMissionDetails(string codeName, int missionId);
-        void CreateMissionComment(string codeName, int missionId, string comment);
+        MissionDetailsDto? GetMissionDetails(string codeName, string urlKey);
+        Mission? CreateMissionComment(string codeName, int missionId, string comment);
     }
 
     public class AgentService : IAgentService
@@ -35,19 +35,14 @@ namespace HackMe.Application.Services
             return _repository.GetAgent(codeName);
         }
 
-        public Mission? GetMission(int id)
-        {
-            return _repository.GetMission(id);
-        }
-
         public IList<Mission> GetMissionsList(string? searchKey, bool includeClassified)
         {
             return _repository.GetMissionList(searchKey, includeClassified);
         }
 
-        public MissionDetailsDto? GetMissionDetails(string codeName, int missionId)
+        public MissionDetailsDto? GetMissionDetails(string codeName, string urlKey)
         {
-            var mission = _repository.GetMission(missionId);
+            var mission = _repository.GetMission(urlKey);
             if (mission == null)
             {
                 return null;
@@ -61,14 +56,14 @@ namespace HackMe.Application.Services
                 IsClassified = mission.IsClassified,
                 Name = mission.Name,
                 UrlKey = mission.UrlKey,
-                Comments = _repository.GetMissionComments(codeName, missionId),
+                Comments = _repository.GetMissionComments(codeName, mission.Id),
                 
             };
 
             return dto;
         }
 
-        public async Task<bool> UpdateActiveMission(string codeName, string mission)
+        public async Task<bool> UpdateAgentActiveMission(string codeName, string mission)
         {
             if (await _repository.AgentExists(codeName)
                 && InputHelper.IsAllowedSqlInjection(mission))
@@ -79,9 +74,11 @@ namespace HackMe.Application.Services
             return false;
         }
 
-        public void CreateMissionComment(string codeName, int missionId, string comment)
+        public Mission? CreateMissionComment(string codeName, int missionId, string comment)
         {
             _repository.CreateMissionComment(codeName, missionId, comment);
+
+            return _repository.GetMission(missionId);
         }
     }
 }

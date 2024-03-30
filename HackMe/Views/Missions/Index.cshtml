@@ -33,8 +33,8 @@
                 {
                     <span class="badge badge-completed rounded-pill">Classified</span>
                 }
-                <p class="card-text">@item.ShortDescription ...</p>
-                <a asp-controller="Missions" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary">Read more</a>
+                <p class="card-text">@Html.Raw(item.ShortDescription) ...</p>
+                <a asp-controller="Missions" asp-action="Detail" asp-route-urlkey="@item.UrlKey" class="btn btn-primary">Read more</a>
             </div>
         </div>
     }

@@ -59,7 +59,7 @@ namespace HackMe.Controllers
                 showBanner = await CreateChallengeResult(ChallengeTaskType.UpdateOthersProfile);
             }
 
-            await _agentService.UpdateActiveMission(codeName, activeMission);
+            await _agentService.UpdateAgentActiveMission(codeName, activeMission);
 
             var result = await CheckPotentialXSS(codeName, activeMission);
             showBanner = showBanner ? showBanner : result;
