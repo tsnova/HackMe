@@ -64,7 +64,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
         name: "missiondetails",
-        pattern: "/missions/{urlKey}",
+        pattern: "/missions/detail/{urlKey}",
         defaults: new { controller = "Missions", action = "Detail" }
     );
 app.MapControllerRoute(
