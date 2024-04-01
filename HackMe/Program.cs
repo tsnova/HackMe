@@ -49,8 +49,10 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Error/Unhandled");
+    // TODO: temp disable error handling
+    // app.UseExceptionHandler("/Error/Unhandled");
 }
+
 app.UseStaticFiles();
 app.UseSession();
 app.UseAuthentication();

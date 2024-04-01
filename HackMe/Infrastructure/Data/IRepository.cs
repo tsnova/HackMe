@@ -50,7 +50,7 @@ namespace HackMe.Infrastructure.Data
 
         public string? ValidateAgentLogin(string codeName, string password)
         {
-            var query = $"SELECT COUNT(*) FROM Agent WHERE CodeName = '{codeName}' AND Password = '{password}'";
+            var query = $"SELECT CodeName FROM Agent WHERE CodeName = '{codeName}' AND Password = '{password}'";
 
             try
             {
