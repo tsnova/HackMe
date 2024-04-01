@@ -21,6 +21,12 @@ namespace HackMe.Controllers
 
         public IActionResult Index()
         {
+            var userIdentity = User?.Identity?.Name;
+            if (userIdentity != null)
+            {
+                return this.RedirectToAction("Index", "AboutUs");
+            }
+
             ViewBag.ShowHeader = false;
             return View(new LoginViewModel());
         }
