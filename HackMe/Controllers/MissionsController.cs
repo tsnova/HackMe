@@ -42,7 +42,6 @@ namespace HackMe.Controllers
 
         public async Task<IActionResult> Detail(string urlKey, bool? showBanner)
         {
-            var classified = await GetClassifiedSetting(true);
             var result = _agentService.GetMissionDetails(GetUserIdentity(), urlKey);
 
             if (result == null)
@@ -50,6 +49,7 @@ namespace HackMe.Controllers
                 return RedirectToAction("PageNotFound", "Error");
             }
 
+            var classified = await GetClassifiedSetting(result.IsClassified);
             if (result.IsClassified && !classified)
             {
                 return RedirectToAction("UnAuthorized", "Error");

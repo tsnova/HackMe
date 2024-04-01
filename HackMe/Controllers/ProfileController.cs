@@ -46,14 +46,15 @@ namespace HackMe.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(string codeName, string activeMission)
         {
-            var identity = GetUserIdentity();
             if (String.IsNullOrEmpty(codeName))
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
 
             var showBanner = false;
-            var authorized = codeName != identity;
+            var identity = GetUserIdentity();
+
+            var authorized = codeName == identity;
             if (!authorized)
             {
                 showBanner = await CreateChallengeResult(ChallengeTaskType.UpdateOthersProfile);
