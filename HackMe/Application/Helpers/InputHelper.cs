@@ -17,7 +17,7 @@ namespace HackMe.Application.Helpers
 
         public static bool IsAllowedSqlInjection(string input)
         {
-            if (!IsSqlInjection(input)) return true;
+            if (!IsSqlInjection(input)) return false;
 
             return !ContainsHarmfulKeywords(input);
         }

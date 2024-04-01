@@ -65,8 +65,7 @@ namespace HackMe.Application.Services
 
         public async Task<bool> UpdateAgentActiveMission(string codeName, string mission)
         {
-            if (await _repository.AgentExists(codeName)
-                && InputHelper.IsAllowedSqlInjection(mission))
+            if (await _repository.AgentExists(codeName))
             {
                 return _repository.UpdateAgentMission(codeName, mission);
             }
