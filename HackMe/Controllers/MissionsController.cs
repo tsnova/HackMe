@@ -50,7 +50,7 @@ namespace HackMe.Controllers
                 return RedirectToAction("PageNotFound", "Error");
             }
 
-            if (result.IsClassified != classified)
+            if (result.IsClassified && !classified)
             {
                 return RedirectToAction("UnAuthorized", "Error");
             }
