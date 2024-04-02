@@ -1,8 +1,8 @@
 ﻿@{
     var showHeader = (bool?)ViewBag.ShowHeader ?? true;
     var showBanner = (bool?)ViewBag.showBanner ?? false;
+    var userIdentity = User?.Identity?.Name;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,8 +37,8 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" 
                                     asp-controller="Profile" 
-                                    asp-action="Index" 
-                                    asp-route-codeName="007">Profile</a>
+                                    asp-action="Index"
+                                   asp-route-codeName="@userIdentity">Profile</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark"
