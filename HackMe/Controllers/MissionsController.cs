@@ -69,7 +69,7 @@ namespace HackMe.Controllers
         public async Task<IActionResult> AddComment(int id, string comment)
         {
             var identity = GetUserIdentity();            
-            var showBanner = await CheckPotentialXSS(comment);
+            var showBanner = await CheckPotentialXSSAndCreateResult(comment);
 
             var result = _agentService.CreateMissionComment(identity, id, comment);
             if (result == null)

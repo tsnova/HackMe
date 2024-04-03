@@ -43,14 +43,14 @@ namespace HackMe.Controllers
             ViewBag.ShowBanner = value;
         }
 
-        protected async Task<bool> CheckPotentialXSS(params string[] values)
+        protected async Task<bool> CheckPotentialXSSAndCreateResult(params string[] values)
         {
             foreach (var value in values)
             {
                 if (InputHelper.HasPotentialXss(value))
                 {
-                    await CreateChallengeResult(ChallengeTaskType.XSSAttack);
-                    return true;
+                    var success = await CreateChallengeResult(ChallengeTaskType.XSSAttack);
+                    return success;
                 }
             }
 

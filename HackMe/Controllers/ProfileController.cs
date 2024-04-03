@@ -65,7 +65,7 @@ namespace HackMe.Controllers
 
             await _agentService.UpdateAgentActiveMission(codeName, activeMission);
 
-            var result = await CheckPotentialXSS(codeName, activeMission);
+            var result = await CheckPotentialXSSAndCreateResult(codeName, activeMission);
             showBanner = showBanner ? showBanner : result;
 
             return RedirectToAction("Index", new { codeName, showBanner });
