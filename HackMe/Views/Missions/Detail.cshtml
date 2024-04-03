@@ -23,7 +23,7 @@
             <form asp-controller="Missions" asp-action="AddComment" asp-route-id="@Model.Id" method="post">
                 @Html.AntiForgeryToken()
                 <div class="form-floating">
-                    <input id="comment" name="comment" class="form-control" required placeholder="Comment ..." maxlength="200" />
+                    <input id="comment" name="comment" class="form-control" required placeholder="Comment ..." maxlength="2000" />
                     <label for="comment">Comment:</label>
                 </div><br />
                 <button class="btn btn-primary w-100 py-2" type="submit">Submit</button>
