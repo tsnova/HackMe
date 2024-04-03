@@ -32,7 +32,11 @@ namespace HackMe.Controllers
             var authorized = agent.CodeName == GetUserIdentity();
             if (!authorized)
             {
-                await CreateChallengeResult(ChallengeTaskType.UnauthorizedProfile);
+                var success = await CreateChallengeResult(ChallengeTaskType.UnauthorizedProfile);
+                if (success)
+                {
+                    showBanner = true;
+                }
             }
 
             var viewModel = _mapper.Map<AgentViewModel>(agent);

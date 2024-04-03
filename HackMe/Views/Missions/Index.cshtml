@@ -34,8 +34,11 @@
                     <span class="badge badge-completed rounded-pill">Classified</span>
                 }
                 <p class="card-text">@Html.Raw(item.ShortDescription) ...</p>
-                <a asp-controller="Missions" asp-action="Detail" asp-route-urlkey="@item.UrlKey" class="btn btn-primary">Read more</a>
+                @if (item.IsActive)
+                {
+                    <a asp-controller="Missions" asp-action="Detail" asp-route-urlkey="@item.UrlKey" class="btn btn-primary">Read more</a>
+                }
             </div>
-        </div>
+        </div><br />
     }
 </div>
